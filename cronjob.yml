@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: oidc-token-fetcher
+  namespace: moreillon
+spec:
+  schedule: "55 7 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: oidc-token-fetcher
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: moreillon/ci-dind:v1.0.4
+              command:
+                - /bin/bash
+                - /script.sh
+              volumeMounts:
+                - mountPath: /script.sh
+                  name: oidc-token-fetcher
+                  subPath: script.sh
+              envFrom:
+                - secretRef:
+                    name: auth0-m2m-env
+          volumes:
+            - name: oidc-token-fetcher
+              configMap:
+                name: oidc-token-fetcher
+---
+
