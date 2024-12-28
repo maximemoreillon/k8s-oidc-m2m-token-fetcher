@@ -1,6 +1,6 @@
 # K8s OIDC M2M token fetcher
 
-A K8s cronjob to fetch an M2M from an Oauth2 provider and store it as a secret.
+A K8s cronjob to fetch an M2M token from an OIDC provider and store it as a secret.
 
 ## Environment variables
 

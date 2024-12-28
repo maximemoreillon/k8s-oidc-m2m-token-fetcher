@@ -4,15 +4,18 @@ metadata:
   name: oidc-token-fetcher
   namespace: moreillon
 spec:
-  schedule: "55 7 * * *"
+  schedule: "*/15 * * * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
         spec:
           serviceAccountName: oidc-token-fetcher
-          restartPolicy: OnFailure
+          restartPolicy: Never
           containers:
             - name: kubectl
+              # TODO: use a simpler image
               image: moreillon/ci-dind:v1.0.4
               command:
                 - /bin/bash
@@ -23,10 +26,8 @@ spec:
                   subPath: script.sh
               envFrom:
                 - secretRef:
-                    name: auth0-m2m-env
+                    name: oidc-m2m-token-fetcher-env
           volumes:
             - name: oidc-token-fetcher
               configMap:
                 name: oidc-token-fetcher
----
-
