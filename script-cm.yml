@@ -14,7 +14,7 @@ data:
         --header 'content-type: application/json' \
         --data '{"client_id":"'"$OIDC_CLIENT_ID"'","client_secret":"'"$OIDC_CLIENT_SECRET"'","audience":"'"$OIDC_AUDIENCE"'","grant_type":"client_credentials"}' \
         | jq -r '.access_token'
-        )
+      )
 
 
     kubectl apply -f - <<EOF
